@@ -89,7 +89,6 @@ class HandleCollisionsAction(Action):
         top_row = log_rows[0]
         
         if self._is_game_over:
-            print("Game Over")
                 
             
             return
@@ -115,7 +114,6 @@ class HandleCollisionsAction(Action):
         
             
             if self._is_game_over:
-                print("Game Over")
                 chicken.set_text("+")
                 
 
