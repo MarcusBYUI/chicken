@@ -17,14 +17,20 @@ class Car(Actor):
     def __init__(self, speed, y_position, level=1):
         super().__init__()
         
-        self._cars = []       
+        self._cars = []     
+        self.level = level
+          
 
         self._speed = speed
         self._prepare_cars(y_position)
-        self.level = level
         
     def _prepare_cars(self, y_position):
-        for i in range(20, MAX_X, CELL_SIZE*2):
+        def gap(level):
+                if level % 2 == 0:
+                    return int(level/2)
+                else:
+                    return level
+        for i in range(20, MAX_X, CELL_SIZE* 2 * gap(self.level)):
             car = Actor()
             car.set_text("=")
             car.set_font_size(CELL_SIZE)
@@ -35,6 +41,8 @@ class Car(Actor):
             car.set_position(position)
             
             self._cars.append(car)
+            
+            
             
         
     def move_next(self):

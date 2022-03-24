@@ -102,10 +102,7 @@ class HandleCollisionsAction(Action):
         else:
                 
             chicken = cast.get_first_actor("chicken") 
-            print(
-            chicken.get_position().get_y()        
-                
-            )        
+        
             if chicken.get_position().get_y() == 170:
                 self._is_game_over = True
             self.check_log_collision(base_row, cast, 170)

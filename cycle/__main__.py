@@ -11,6 +11,7 @@ from game.scripting.control_chicken_action import ControlChickenAction
 from game.scripting.control_cycle2_action import ControlCycleTwoAction
 from game.scripting.move_actors_action import MoveActorsAction
 from game.scripting.handle_collisions_action import HandleCollisionsAction
+from game.scripting.handle_level_up import HandleLevelUp
 from game.scripting.draw_actors_action import DrawActorsAction
 from game.directing.director import Director
 from game.services.keyboard_service import KeyboardService
@@ -27,16 +28,16 @@ def main():
     cast.add_actor("level", Level())
     
     #car lane 1
-    cast.add_actor("car", Car(1, CAR_LANE_ONE))
+    cast.add_actor("car", Car(2, CAR_LANE_ONE))
     #car lane 1
-    cast.add_actor("car", Car(2, CAR_LANE_TWO))
+    cast.add_actor("car", Car(1, CAR_LANE_TWO))
     #car lane 1
     cast.add_actor("car", Car(3, CAR_LANE_THREE))
     
     #Water Log
-    cast.add_actor("log", Log(2, 98))
-    cast.add_actor("log", Log(1, 138))
-    cast.add_actor("log", Log(3, 178))
+    cast.add_actor("log", Log(2, LOG_LANE_THREE))
+    cast.add_actor("log", Log(1, LOG_LANE_TWO))
+    cast.add_actor("log", Log(3, LOG_LANE_ONE))
     
     
     
@@ -51,6 +52,8 @@ def main():
     script.add_action("update", MoveActorsAction())
     script.add_action("update", MoveCarAction())
     script.add_action("update", HandleCollisionsAction())
+    script.add_action("update", HandleLevelUp())
+    
     script.add_action("output", DrawActorsAction(video_service))
     
     director = Director(video_service)

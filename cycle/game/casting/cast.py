@@ -79,6 +79,7 @@ class Cast:
                 
                 return result
 
+    
     def remove_actor(self, group, actor):
         """Removes an actor from the given group.
         
@@ -88,3 +89,14 @@ class Cast:
         """
         if group in self._actors:
             self._actors[group].remove(actor)
+            
+    def remove_group(self, group):
+        """Removes an actor from the given group.
+        
+        Args:
+            group (string): The name of the group.
+            actor (Actor): The actor to remove.
+        """
+        if group in self._actors:
+            del self._actors[group]
+            

@@ -26,13 +26,13 @@ class Level(Actor):
         
         
 
-    def remove_live(self):
+    def next_level(self):
         """Adds the given points to the score's total points.
         
         Args:
             points (int): The points to add.
         """
-        self._level -= 1
+        self._level += 1
         
     def get_level(self):
         
