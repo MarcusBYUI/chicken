@@ -128,8 +128,12 @@ class HandleCollisionsAction(Action):
         for log in log_list:
             
             if chicken.get_position().get_y() == y and chicken.get_position().get_x() in range(log.get_position().get_x(), log.get_position().get_x()+60):
-                chicken.set_position(Point(log.get_position().get_x() + 20, y))
+                chicken.set_position(Point(log.get_position().get_x(), y))
                 self._is_game_over = False
+                if chicken.get_position().get_x() <= 0:
+                    self._is_game_over = True
+                    
+                 
                 
                 
     def check_car_collision(self, row, cast, y):   

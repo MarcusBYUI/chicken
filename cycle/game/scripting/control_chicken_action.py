@@ -55,7 +55,10 @@ class ControlChickenAction(Action):
         
         # up
         if self._keyboard_service.is_key_down('up'):
-            self._direction = Point(0, -constants.CELL_SIZE)
+            if chicken.get_position().get_y() <= constants.MAX_Y - 350:
+                self._direction = Point(0, 0)               
+            else:
+                self._direction = Point(0, -constants.CELL_SIZE)
         
 
         chicken = cast.get_first_actor("chicken")
