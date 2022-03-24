@@ -1,0 +1,57 @@
+import constants
+from game.casting.chicken import Chicken
+from game.scripting.action import Action
+from game.shared.point import Point
+
+
+class ControlChickenAction(Action):
+    """
+    An input action that controls Cycle One.
+    
+    The responsibility of ControlChickenAction is to get the direction and move chicken in that direction.
+
+    Attributes:
+        _keyboard_service (KeyboardService): An instance of KeyboardService.
+    """
+
+    def __init__(self, keyboard_service):
+        """Constructs a new ControlChickenAction using the specified KeyboardService.
+        
+        Args:
+            keyboard_service (KeyboardService): An instance of KeyboardService.
+        """
+        self._keyboard_service = keyboard_service
+        
+        self._direction = Point(0, 0)
+        
+
+
+    def execute(self, cast, script):
+        """Executes the control chicken action.
+
+        Args:
+            cast (Cast): The cast of Actors in the game.
+            script (Script): The script of Actions in the game.
+        """
+        
+        # left
+        if self._keyboard_service.is_key_down('left'):
+            self._direction = Point(-10, 0)
+        
+        # right
+        if self._keyboard_service.is_key_down('right'):
+            self._direction = Point(10, 0)
+        
+        # up
+        if self._keyboard_service.is_key_down('up'):
+            self._direction = Point(0, -constants.CELL_SIZE)
+        
+        # down
+        if self._keyboard_service.is_key_down('down'):
+            self._direction = Point(0, constants.CELL_SIZE) 
+
+        chicken = cast.get_first_actor("chicken")
+        chicken.set_velocity(self._direction)
+        self._direction = Point(0, 0)
+        
+        
