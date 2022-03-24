@@ -1,5 +1,6 @@
 import pyray
-import constants
+from constants import *
+
 
 
 class VideoService:
@@ -79,23 +80,23 @@ class VideoService:
         Args:
             title (string): The title of the window.
         """
-        pyray.init_window(constants.MAX_X, constants.MAX_Y, constants.CAPTION)
-        pyray.set_target_fps(constants.FRAME_RATE)
+        pyray.init_window(MAX_X, MAX_Y, CAPTION)
+        pyray.set_target_fps(FRAME_RATE)
 
     def _draw_grid(self):
         """Draws a grid on the screen."""
 
             
-        for x in range(0, constants.MAX_X, constants.CELL_SIZE):
-            pyray.draw_line(x, 0, x, constants.MAX_Y, pyray.BLACK)
+        for x in range(0, MAX_X, CELL_SIZE):
+            pyray.draw_line(x, 0, x, MAX_Y, pyray.BLACK)
             
     def _draw_road(self):
         """Draws a road on the screen."""
-        pyray.draw_rectangle(0,0, constants.MAX_X, 40, pyray.BLACK)  
+        pyray.draw_rectangle(0,0, MAX_X, 40, pyray.BLACK)  
         
-        pyray.draw_rectangle(0,constants.MAX_Y-320, constants.MAX_X, 125, pyray.BLACK)  
+        pyray.draw_rectangle(0,MAX_Y-320, MAX_X, 125, pyray.BLACK)  
         
-        pyray.draw_rectangle(0,constants.MAX_Y-150, constants.MAX_X, 120, pyray.BLACK)  
+        pyray.draw_rectangle(0,MAX_Y-150, MAX_X, 120, pyray.BLACK)  
          
          
 

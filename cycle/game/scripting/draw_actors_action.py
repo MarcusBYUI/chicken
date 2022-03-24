@@ -29,14 +29,11 @@ class DrawActorsAction(Action):
         lives = cast.get_first_actor("lives")
         level = cast.get_first_actor("level")
 
-        #score2 = cast.get_first_actor("score2")
         cars_list = cast.get_actors("car")
         log_list = cast.get_actors("log")
 
 
         chicken = cast.get_first_actor("chicken")
-        #cycle2 = cast.get_first_actor("cycle2")
-        #segments2 = cycle2.get_segments()
         messages = cast.get_actors("messages")
         
 
@@ -52,11 +49,9 @@ class DrawActorsAction(Action):
             self._video_service.draw_actors(logs)
         
         
-        #self._video_service.draw_actor(cycle2)
-        #self._video_service.draw_actors(segments2)
+
         self._video_service.draw_actor(lives)
         self._video_service.draw_actor(level)
 
-        #self._video_service.draw_actor(score2)    
         self._video_service.draw_actors(messages, True)
         self._video_service.flush_buffer()

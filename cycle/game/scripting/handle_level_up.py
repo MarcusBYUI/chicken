@@ -2,13 +2,8 @@ from constants import *
 from game.casting.actor import Actor
 from game.scripting.action import Action
 from game.shared.point import Point
-from game.casting.chicken import Chicken
-from game.casting.cycle2 import CycleTwo
 from game.services.keyboard_service import KeyboardService
-from game.scripting.control_chicken_action import ControlChickenAction
-from game.scripting.control_cycle2_action import ControlCycleTwoAction
 from game.scripting.handle_restart_action import HandleRestartAction
-from game.shared.color import Color
 from game.casting.car import Car
 from game.casting.log import Log
 

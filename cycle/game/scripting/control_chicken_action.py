@@ -1,6 +1,6 @@
-import constants
+from constants import *
 
-from game.casting.chicken import Chicken
+
 from game.scripting.action import Action
 from game.shared.point import Point
 
@@ -48,17 +48,17 @@ class ControlChickenAction(Action):
         
         # right
         if self._keyboard_service.is_key_down('right'):
-            if chicken.get_position().get_x() >= constants.MAX_X -20:
+            if chicken.get_position().get_x() >= MAX_X -20:
                 self._direction = Point(0, 0)               
             else:
                 self._direction = Point(10, 0)
         
         # up
         if self._keyboard_service.is_key_down('up'):
-            if chicken.get_position().get_y() <= constants.MAX_Y - 350:
+            if chicken.get_position().get_y() <= MAX_Y - 350:
                 self._direction = Point(0, 0)               
             else:
-                self._direction = Point(0, -constants.CELL_SIZE)
+                self._direction = Point(0, -CELL_SIZE)
         
 
         chicken = cast.get_first_actor("chicken")

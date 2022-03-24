@@ -17,7 +17,7 @@ class Lives(Actor):
     """
     def __init__(self):
         super().__init__()
-        self._lives = 13
+        self._lives = 30
         self._color = WHITE
         self._position = Point(0, 10)
         self.set_text(f"Lives: {self._lives}")

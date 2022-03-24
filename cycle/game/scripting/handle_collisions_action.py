@@ -1,14 +1,13 @@
-import constants
+from constants import *
 from game.casting.actor import Actor
 from game.scripting.action import Action
 from game.shared.point import Point
-from game.casting.chicken import Chicken
-from game.casting.cycle2 import CycleTwo
 from game.services.keyboard_service import KeyboardService
-from game.scripting.control_chicken_action import ControlChickenAction
-from game.scripting.control_cycle2_action import ControlCycleTwoAction
 from game.scripting.handle_restart_action import HandleRestartAction
-from game.shared.color import Color
+from game.casting.car import Car
+from game.casting.log import Log
+from game.casting.lives import Lives
+
 
 import time
 
@@ -28,7 +27,7 @@ class HandleCollisionsAction(Action):
         self._winner = "";
         self._keyboard_service = KeyboardService()
         self._action = HandleRestartAction(self._keyboard_service)
-        self._log_position = 0
+    
         
 
     def execute(self, cast, script):
@@ -175,32 +174,49 @@ class HandleCollisionsAction(Action):
             rows.stop_logs()
             for log in rows.get_logs():
                 log.set_color(Color(255, 255, 255))
-            
 
-
-
-        # for segment in segments1:
-        #     segment.set_color(constants.WHITE)
-
-        # for segment in segments2:
-        #     segment.set_color(constants.WHITE)
     
         #checks for input  
         restart = script.get_last_action("input")       
         if restart.get_restart():
-            message = cast.get_last_actor("messages")
-                
-            message.set_text("")
-
-            old_chicken = cast.get_first_actor("chicken")   
-            cast.remove_actor("chicken", old_chicken)
-            cast.add_actor("chicken", Chicken())
-          
+            level = cast.get_first_actor("level")
+            level.next_level()
             
-            script.add_action("input", ControlChickenAction(self._keyboard_service))
+            
+            
+            cast.remove_group("lives")
+            
+            cast.add_actor("lives", Lives())
+            
+            
+            next_level = 1
+            level.set_text(f"Level: {next_level}")
+            
+            chicken = cast.get_first_actor("chicken")
+            chicken.set_position(Point(int(MAX_X/2), int(MAX_Y - 30)))
+            chicken.set_text("#")
+            
+            
+        
+            cast.remove_group("car")
+            cast.remove_group("log")
+            #car lane 1
+            cast.add_actor("car", Car(2, CAR_LANE_ONE, next_level))
+            #car lane 1
+            cast.add_actor("car", Car(1, CAR_LANE_TWO, next_level))
+            #car lane 1
+            cast.add_actor("car", Car(3, CAR_LANE_THREE, next_level))
+            
+            #Water Log
+            cast.add_actor("log", Log(2, LOG_LANE_THREE, next_level))
+            cast.add_actor("log", Log(1, LOG_LANE_TWO, next_level))
+            cast.add_actor("log", Log(3, LOG_LANE_ONE, next_level))
+            
             self._action = HandleRestartAction(self._keyboard_service)
             
-            self._is_game_over = False
+            
+            self._is_game_over=False
+
             
         else:    pass    
         
@@ -221,7 +237,7 @@ class HandleCollisionsAction(Action):
 
             
             message = Actor()
-            x = int(constants.MAX_X / 2)
+            x = int(MAX_X / 2)
             y = int(10)
             position = Point(x, y)
             message.set_position(position)
@@ -249,7 +265,7 @@ class HandleCollisionsAction(Action):
         if self._is_game_over:
 
             message = Actor()
-            x = int(constants.MAX_X / 2)
+            x = int(MAX_X / 2)
             y = int(10)
             position = Point(x, y)
             message.set_position(position)
@@ -278,9 +294,9 @@ class HandleCollisionsAction(Action):
         
         chicken = cast.get_first_actor("chicken")
         if chicken.get_position().get_y() < 211:
-            chicken.set_position(Point(int(constants.MAX_X / 2), 210))
+            chicken.set_position(Point(int(MAX_X / 2), 210))
     
         elif chicken.get_position().get_y() < 370:
-            chicken.set_position(Point(int(constants.MAX_X/2), int(constants.MAX_Y - 30)))
+            chicken.set_position(Point(int(MAX_X/2), int(MAX_Y - 30)))
         self._is_game_over=False
         
