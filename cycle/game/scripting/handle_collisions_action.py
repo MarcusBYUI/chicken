@@ -59,11 +59,7 @@ class HandleCollisionsAction(Action):
                 self._restart(cast, script)
                 
             else:
-                time.sleep(2)
-                message = cast.get_last_actor("messages")
-                
-                message.set_text("")
-                self._is_game_over=False
+                self._continue(cast, script)
                 
                 
                 
@@ -121,7 +117,7 @@ class HandleCollisionsAction(Action):
             
             if self._is_game_over:
                 print("Game Over")
-                chicken.set_text("❌")
+                chicken.set_text("+")
                 
 
                 
@@ -144,7 +140,7 @@ class HandleCollisionsAction(Action):
             
             if chicken.get_position().get_y() == y and chicken.get_position().get_x() in range(car.get_position().get_x() - 20, car.get_position().get_x() + 20):
                 self._is_game_over = True 
-                chicken.set_text("❌")
+                chicken.set_text("+")
                   
             
         
@@ -262,15 +258,25 @@ class HandleCollisionsAction(Action):
                 
             cast.add_actor("messages", message) 
             
-            chicken = cast.get_first_actor("chicken")
-            if chicken.get_position().get_y() < 211:
-                chicken.set_position(Point(int(constants.MAX_X / 2), 210))
             
-            elif chicken.get_position().get_y() < 370:
-                chicken.set_position(Point(int(constants.MAX_X/2), int(constants.MAX_Y - 30)))
 
-            chicken.set_text("#")
             
             self._is_game_over = True
             
-            
+    def _continue(self, cast, script):
+        time.sleep(2)
+        message = cast.get_last_actor("messages")
+        message.set_text("")
+        
+        chicken = cast.get_first_actor("chicken")         
+        
+        chicken.set_text("#")
+        
+        chicken = cast.get_first_actor("chicken")
+        if chicken.get_position().get_y() < 211:
+            chicken.set_position(Point(int(constants.MAX_X / 2), 210))
+    
+        elif chicken.get_position().get_y() < 370:
+            chicken.set_position(Point(int(constants.MAX_X/2), int(constants.MAX_Y - 30)))
+        self._is_game_over=False
+        

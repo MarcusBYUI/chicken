@@ -1,4 +1,5 @@
 import constants
+
 from game.casting.chicken import Chicken
 from game.scripting.action import Action
 from game.shared.point import Point
@@ -34,21 +35,28 @@ class ControlChickenAction(Action):
             script (Script): The script of Actions in the game.
         """
         
+        chicken = cast.get_first_actor("chicken")         
+        
+        
         # left
         if self._keyboard_service.is_key_down('left'):
-            self._direction = Point(-10, 0)
+            if chicken.get_position().get_x() <= 0:
+                self._direction = Point(0, 0)
+                
+            else:
+                self._direction = Point(-10, 0)
         
         # right
         if self._keyboard_service.is_key_down('right'):
-            self._direction = Point(10, 0)
+            if chicken.get_position().get_x() >= constants.MAX_X -20:
+                self._direction = Point(0, 0)               
+            else:
+                self._direction = Point(10, 0)
         
         # up
         if self._keyboard_service.is_key_down('up'):
             self._direction = Point(0, -constants.CELL_SIZE)
         
-        # down
-        if self._keyboard_service.is_key_down('down'):
-            self._direction = Point(0, constants.CELL_SIZE) 
 
         chicken = cast.get_first_actor("chicken")
         chicken.set_velocity(self._direction)
