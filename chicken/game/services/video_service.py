@@ -1,5 +1,8 @@
+from distutils.log import debug
 import pyray
 from constants import *
+import pathlib
+import os
 
 
 
@@ -8,13 +11,15 @@ class VideoService:
     on the screen. 
     """
 
-    def __init__(self, debug = False):
+    def __init__(self, debug = True):
         """Constructs a new VideoService using the specified debug mode.
         
         Args:
             debug (bool): whether or not to draw in debug mode.
         """
         self._debug = debug
+        self._textures = {}
+        
 
     def close_window(self):
         """Closes the window and releases all computing resources."""
@@ -26,9 +31,10 @@ class VideoService:
         """
         pyray.begin_drawing()
         pyray.clear_background([25,25,55])
+        self._draw_river()
         self._draw_road()
         
-        if self._debug == True:
+        if self._debug == debug:
             
             pass
             #self._draw_grid()
@@ -90,13 +96,19 @@ class VideoService:
         for x in range(0, MAX_X, CELL_SIZE):
             pyray.draw_line(x, 0, x, MAX_Y, pyray.BLACK)
             
-    def _draw_road(self):
+    def _draw_river(self):
         """Draws a road on the screen."""
         pyray.draw_rectangle(0,0, MAX_X, 40, pyray.BLACK)  
         
         pyray.draw_rectangle(0,MAX_Y-320, MAX_X, 125, pyray.BLACK)  
         
-        pyray.draw_rectangle(0,MAX_Y-150, MAX_X, 120, pyray.BLACK)  
+    def _draw_road(self):
+        pyray.draw_rectangle(0,MAX_Y-155, MAX_X, 120, pyray.BLACK) 
+        
+        #Draw lanes
+        for i in range(5, MAX_X, 35):
+            pyray.draw_line_ex(pyray.Vector2(i, MAX_Y-117), pyray.Vector2(i+10, MAX_Y-117), 4, pyray.WHITE); 
+            pyray.draw_line_ex(pyray.Vector2(i, MAX_Y-77), pyray.Vector2(i+10, MAX_Y-77), 4, pyray.WHITE); 
          
          
 
@@ -104,3 +116,49 @@ class VideoService:
     def _get_x_offset(self, text, font_size):
         width = pyray.measure_text(text, font_size)
         return int(width / 2)
+    
+    
+    def draw_image(self, image, position):
+        filepath = image.get_filename()
+        texture = self._textures[filepath]
+        x = position.get_x()
+        y = position.get_y()
+        raylib_position = pyray.Vector2(x, y)
+        scale = image.get_scale()
+        rotation = image.get_rotation()
+        tint = self._to_raylib_color(Color(255,255,255)) 
+        pyray.draw_texture_ex(texture, raylib_position, rotation, scale, tint)
+        
+    def draw_images(self, actors, centered=False):
+        """Draws the text for the given list of actors on the screen.
+
+        Args:
+            actors (list): A list of actors to draw.
+        """ 
+        for actor in actors:
+            self.draw_image(actor.get_image(), actor.get_position())
+        
+    def _to_raylib_color(self, color):
+        r, g, b, a = color.to_tuple()
+        return pyray.Color(r, g, b, a)
+    
+    def load_images(self, directory):
+        filepaths = self._get_filepaths(directory, [".png", ".gif", ".jpg", ".jpeg", ".bmp"])
+        for filepath in filepaths:
+            if filepath not in self._textures.keys():
+                texture = pyray.load_texture(filepath)
+                self._textures[filepath] = texture
+                
+    def _get_filepaths(self, directory, filter):
+        filepaths = []
+        for file in os.listdir(directory):
+            filename = directory + '/' + file
+            extension = pathlib.Path(filename).suffix.lower()
+            if extension in filter:
+                filepaths.append(filename)
+        return filepaths  
+    
+    def unload_images(self):
+        for texture in self._textures.values():
+            pyray.unload_texture(texture)
+        self._textures.clear()  

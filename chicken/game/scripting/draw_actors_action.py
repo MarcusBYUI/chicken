@@ -34,15 +34,19 @@ class DrawActorsAction(Action):
 
 
         chicken = cast.get_first_actor("chicken")
+        image = chicken.get_image()
+        pos = chicken.get_position()
         messages = cast.get_actors("messages")
         
 
         self._video_service.clear_buffer()
         #self._video_service._draw_grid()
-        self._video_service.draw_actor(chicken)
+        
+        self._video_service.draw_image(image, pos)
+        
         for car in cars_list:
             cars = car.get_cars()
-            self._video_service.draw_actors(cars)
+            self._video_service.draw_images(cars)
             
         for log in log_list:
             logs = log.get_logs()

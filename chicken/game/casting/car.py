@@ -14,27 +14,24 @@ class Car(Actor):
     Attributes:
         _points (int): The number of points the collision is worth.
     """
-    def __init__(self, speed, y_position, level=1):
+    def __init__(self, speed, y_position,image, size, level=1):
         super().__init__()
         
         self._cars = []     
         self.level = level
+        self._image = image
+        self._size = size
           
 
         self._speed = speed
         self._prepare_cars(y_position)
         
     def _prepare_cars(self, y_position):
-        def gap(level):
-                if level % 2 == 0:
-                    return int(level/2)
-                else:
-                    return level
-        for i in range(20, MAX_X, CELL_SIZE* 2 * gap(self.level)):
+                
+        for i in range(0, MAX_X, CAR_GAP * self._gap(self.level)):
             car = Actor()
-            car.set_text("=")
-            car.set_font_size(CELL_SIZE)
-            car.set_color(Color(randint(0,255), randint(0,255), randint(0,255)))
+            car.set_image(self._image[randint(0,5)])
+            car.set_size(self._size)
             x = i
             y = y_position
             position = Point(x, y)
@@ -44,7 +41,13 @@ class Car(Actor):
             
             
             
+    def _gap(self, level):
+        if level % 2 == 0:
+            return int(level/2)
+        else:
+            return level     
         
+           
     def move_next(self):
         """Moves the actor to its next position according to its velocity. Will wrap the position 
         from one side of the screen to the other when it reaches the given maximum x and y values.
@@ -66,3 +69,6 @@ class Car(Actor):
     
     def stop_cars(self):
         self._speed = 0
+
+
+    

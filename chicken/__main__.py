@@ -5,6 +5,8 @@ from game.casting.chicken import Chicken
 from game.casting.car import Car
 from game.casting.log import Log
 from game.scripting.script import Script
+from game.shared.point import Point
+from game.casting.image import Image
 from game.scripting.control_chicken_action import ControlChickenAction
 from game.scripting.move_actors_action import MoveActorsAction
 from game.scripting.handle_collisions_action import HandleCollisionsAction
@@ -14,22 +16,33 @@ from game.directing.director import Director
 from game.services.keyboard_service import KeyboardService
 from game.services.video_service import VideoService
 from game.scripting.move_car_action import MoveCarAction
+from game.scripting.load_asset_action import LoadAssetsAction
+from game.scripting.unload_assets_action import UnloadAssetsAction
+
 from constants import *
 
 def main():
     
     # create the cast
     cast = Cast()
-    cast.add_actor("chicken", Chicken())
+    size = Point(28, 28)
+    image = Image(IMAGE_FILE)
+    cast.add_actor("chicken", Chicken(image, size))
     cast.add_actor("lives", Lives())
     cast.add_actor("level", Level())
     
     #car lane 1
-    cast.add_actor("car", Car(2, CAR_LANE_ONE))
-    #car lane 1
-    cast.add_actor("car", Car(1, CAR_LANE_TWO))
-    #car lane 1
-    cast.add_actor("car", Car(3, CAR_LANE_THREE))
+    car_size = Point(28, 28)
+    car_images = [Image(BLACK_TRUCK), Image(BLACK_CAR), Image(GREEN_CAR), Image(BLUE_CAR), Image(YELLOW_CAR), Image(RED_TRUCK)]
+    
+    cast.add_actor("car", Car(2, CAR_LANE_ONE, car_images, car_size))
+    
+    #car lane 2
+    
+    cast.add_actor("car", Car(1, CAR_LANE_TWO, car_images, car_size))
+    #car lane 3
+    
+    cast.add_actor("car", Car(3, CAR_LANE_THREE, car_images, car_size))
     
     #Water Log
     cast.add_actor("log", Log(2, LOG_LANE_THREE))
@@ -41,9 +54,11 @@ def main():
    
     # start the game
     keyboard_service = KeyboardService() 
-    video_service =  (VideoService())
+    video_service =  VideoService()
 
     script = Script()
+    script.add_action("update", LoadAssetsAction(video_service))
+    
     script.add_action("input", ControlChickenAction(keyboard_service))
     
     script.add_action("update", MoveActorsAction())
@@ -52,6 +67,8 @@ def main():
     script.add_action("update", HandleLevelUp())
     
     script.add_action("output", DrawActorsAction(video_service))
+    script.add_action("output", UnloadAssetsAction(video_service))
+    
     
     director = Director(video_service)
     director.start_game(cast, script)

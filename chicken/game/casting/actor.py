@@ -25,6 +25,8 @@ class Actor:
         self._color = Color(255, 255, 255)
         self._position = Point(0, 0)
         self._velocity = Point(0, 0)
+        self._image = ""
+        self._size = ""
 
     def get_color(self):
         """Gets the actor's color as a tuple of three ints (r, g, b).
@@ -118,3 +120,35 @@ class Actor:
             velocity (Point): The given velocity.
         """
         self._velocity = velocity
+        
+    def get_image(self):
+        """Gets the ball's image.
+        
+        Returns:
+            An instance of Image.
+        """
+        return self._image
+
+    def get_size(self):
+        """Gets the ball's image.
+        
+        Returns:
+            An instance of Image.
+        """
+        return self._size
+    
+    def set_image(self, image):
+        """Gets the ball's image.
+        
+        Returns:
+            An instance of Image.
+        """
+        self._image = image
+
+    def set_size(self, size):
+        """Gets the ball's image.
+        
+        Returns:
+            An instance of Image.
+        """
+        self._size = size
