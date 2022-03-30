@@ -28,7 +28,7 @@ class Car(Actor):
         
     def _prepare_cars(self, y_position):
                 
-        for i in range(0, MAX_X, CAR_GAP * self._gap(self.level)):
+        for i in range(0, MAX_X, CAR_GAP * self._gap(self.level)): 
             car = Actor()
             car.set_image(self._image[randint(0,5)])
             car.set_size(self._size)
@@ -69,6 +69,11 @@ class Car(Actor):
     
     def stop_cars(self):
         self._speed = 0
+        
+    def start_cars(self, speed):
+        if speed < 0:
+            speed = 1
+        self._speed = speed
 
 
     

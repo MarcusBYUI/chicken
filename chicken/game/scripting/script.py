@@ -61,3 +61,13 @@ class Script:
         """
         if group in self._actions:
             self._actions[group].remove(action)
+            
+    def remove_first_action(self, group):
+        """Removes an action from the given group.
+        
+        Args:
+            group (string): The name of the group.
+            action (Action): The action to remove.
+        """
+        if group in self._actions:
+            self._actions[group].pop(0)           

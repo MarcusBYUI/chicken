@@ -1,4 +1,5 @@
 from game.scripting.action import Action
+from game.shared.point import Point
 
 
 class DrawActorsAction(Action):
@@ -26,36 +27,101 @@ class DrawActorsAction(Action):
             cast (Cast): The cast of Actors in the game.
             script (Script): The script of Actions in the game.
         """
-        lives = cast.get_first_actor("lives")
-        level = cast.get_first_actor("level")
-
-        cars_list = cast.get_actors("car")
-        log_list = cast.get_actors("log")
-
-
+        
+        #chicken
         chicken = cast.get_first_actor("chicken")
         image = chicken.get_image()
         pos = chicken.get_position()
-        messages = cast.get_actors("messages")
         
-
-        self._video_service.clear_buffer()
-        #self._video_service._draw_grid()
+        #menu screen
+        menu = cast.get_first_actor("menu")
+        texts = menu.get_texts()
         
-        self._video_service.draw_image(image, pos)
         
-        for car in cars_list:
-            cars = car.get_cars()
-            self._video_service.draw_images(cars)
+        
+        if menu.get_draw():
+            self._video_service.clear_buffer()
+                
+            self._video_service.draw_menu(texts)
             
-        for log in log_list:
-            logs = log.get_logs()
-            self._video_service.draw_actors(logs)
+
+                
+            self._video_service.flush_buffer()
+            
+            
+        else:
+            
+            #banner
+            banner = cast.get_first_actor("banner")
+            
+            #road
+            road = cast.get_first_actor("road")
+          
+            #river
+            river = cast.get_first_actor("river")
+   
+            #lives
+            lives = cast.get_first_actor("lives")
+            
+            #level
+            level = cast.get_first_actor("level")
+            
+            #cars
+            cars_list = cast.get_actors("car")
+            
+            #log
+            log_list = cast.get_actors("log")
+
+
+            
+            #game meassages
+            messages = cast.get_actors("messages")
+            
         
         
-
-        self._video_service.draw_actor(lives)
-        self._video_service.draw_actor(level)
-
-        self._video_service.draw_actors(messages, True)
-        self._video_service.flush_buffer()
+            
+            
+            #Begin drawing------------------------------------------------------------------------------
+            self._video_service.clear_buffer()
+            #self._video_service._draw_grid()
+            # banner drawing
+            self._video_service.draw_shape(banner)
+            
+            
+            #road drawing
+            self._video_service.draw_shape(road, True)
+            
+            #river drawing
+            self._video_service.draw_shape(river)
+            
+            
+            
+            #chicken drawing
+            self._video_service.draw_image(image, pos)
+            
+            #car drawing
+            for car in cars_list:
+                cars = car.get_cars()
+                self._video_service.draw_images(cars)
+                
+            #log drawing
+            for log in log_list:
+                logs = log.get_logs()
+                self._video_service.draw_images(logs)
+                
+            
+            
+            #lives drawing
+            self._video_service.draw_actor(lives)
+            
+            #level drawing
+            self._video_service.draw_actor(level)
+            
+            #message drawing
+            self._video_service.draw_actors(messages, True)
+                
+                    
+                
+                
+            self._video_service.flush_buffer()
+            #End drawing -----------------------------------------------------------------------

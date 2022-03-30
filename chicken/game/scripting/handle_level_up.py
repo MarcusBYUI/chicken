@@ -6,6 +6,7 @@ from game.services.keyboard_service import KeyboardService
 from game.scripting.handle_restart_action import HandleRestartAction
 from game.casting.car import Car
 from game.casting.log import Log
+from random import  *
 
 import time
 
@@ -63,28 +64,26 @@ class HandleLevelUp(Action):
     def _do_level_up(self, cast, script):
         
         level = cast.get_first_actor("level")
+        last_level = level.get_level()
+        
         level.next_level()
         
         next_level = level.get_level()
         level.set_text(f"Level: {next_level}")
         
         chicken = cast.get_first_actor("chicken")
+
         chicken.set_position(Point(int(MAX_X/2), int(MAX_Y - 30)))
         
     
-        cast.remove_group("car")
-        cast.remove_group("log")
-        #car lane 1
-        cast.add_actor("car", Car(2, CAR_LANE_ONE, next_level))
-        #car lane 1
-        cast.add_actor("car", Car(1, CAR_LANE_TWO, next_level))
-        #car lane 1
-        cast.add_actor("car", Car(3, CAR_LANE_THREE, next_level))
+        car_rows = cast.get_actors("car")
+        for rows in car_rows:
+            rows.start_cars(randint(last_level - randint(1, 3),next_level))
+
         
-        #Water Log
-        cast.add_actor("log", Log(2, LOG_LANE_THREE, next_level))
-        cast.add_actor("log", Log(1, LOG_LANE_TWO, next_level))
-        cast.add_actor("log", Log(3, LOG_LANE_ONE, next_level))
+        log_rows = cast.get_actors("log")
+        for rows in log_rows:
+            rows.start_logs(randint(last_level - randint(1, 3) ,next_level))
         
         self._level_up = False
         

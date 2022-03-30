@@ -43,3 +43,4 @@ class Chicken(Actor):
             An instance of Image.
         """
         return self._size
+    

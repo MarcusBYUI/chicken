@@ -23,7 +23,7 @@ class HandleRestartAction(Action):
         """
         self._keyboard_service = keyboard_service
         
-        self._restart = False
+      
 
     def execute(self, cast, script):
         """Executes the handle restart action.
@@ -32,12 +32,22 @@ class HandleRestartAction(Action):
             cast (Cast): The cast of Actors in the game.
             script (Script): The script of Actions in the game.
         """
-        # restart action
+        
+        menu = cast.get_first_actor("menu")
+
         if self._keyboard_service.is_key_down('space'):
-            self._restart = True          
+            if not menu.get_game_state():
+                #start game
+                menu.set_draw(False)
+                menu.change_game_state(True)
+            
+            elif menu.get_draw():
+                # restart action
+                
+                menu.set_restart(True)
+         
                    
-    def get_restart(self):
-        return self._restart
+
             
         
         

@@ -11,7 +11,7 @@ class VideoService:
     on the screen. 
     """
 
-    def __init__(self, debug = True):
+    def __init__(self, debug = False):
         """Constructs a new VideoService using the specified debug mode.
         
         Args:
@@ -30,16 +30,15 @@ class VideoService:
         the beginning of the game's output phase.
         """
         pyray.begin_drawing()
-        pyray.clear_background([25,25,55])
-        self._draw_river()
-        self._draw_road()
+        pyray.clear_background(GREEN.to_tuple())
+
         
         if self._debug == debug:
             
             pass
             #self._draw_grid()
     
-    def draw_actor(self, actor, centered=False):
+    def draw_actor(self, actor, centered=False, menu=False):
         """Draws the given actor's text on the screen.
 
         Args:
@@ -55,7 +54,10 @@ class VideoService:
             width = pyray.measure_text(text, font_size)
             offset = int(width / 2)
             x -= offset
+            
         pyray.draw_text(text, x, y, font_size, color)
+        
+    
         
     def draw_actors(self, actors, centered=False):
         """Draws the text for the given list of actors on the screen.
@@ -96,33 +98,51 @@ class VideoService:
         for x in range(0, MAX_X, CELL_SIZE):
             pyray.draw_line(x, 0, x, MAX_Y, pyray.BLACK)
             
-    def _draw_river(self):
-        """Draws a road on the screen."""
-        pyray.draw_rectangle(0,0, MAX_X, 40, pyray.BLACK)  
+ 
         
-        pyray.draw_rectangle(0,MAX_Y-320, MAX_X, 125, pyray.BLACK)  
+    def draw_shape(self, actor, lanes=False):
+        x1 = actor.get_position().get_x()
+        y1 = actor.get_position().get_y()
+        x2 = actor.get_end_position().get_x()
+        y2 = actor.get_end_position().get_y()
+        color = actor.get_color().to_tuple()
         
-    def _draw_road(self):
-        pyray.draw_rectangle(0,MAX_Y-155, MAX_X, 120, pyray.BLACK) 
+        pyray.draw_rectangle(x1, y1, x2, y2, color) 
         
+        
+        if lanes:
         #Draw lanes
-        for i in range(5, MAX_X, 35):
-            pyray.draw_line_ex(pyray.Vector2(i, MAX_Y-117), pyray.Vector2(i+10, MAX_Y-117), 4, pyray.WHITE); 
-            pyray.draw_line_ex(pyray.Vector2(i, MAX_Y-77), pyray.Vector2(i+10, MAX_Y-77), 4, pyray.WHITE); 
+            for i in range(5, MAX_X, 35):
+                pyray.draw_line_ex(pyray.Vector2(i, MAX_Y-117), pyray.Vector2(i+10, MAX_Y-117), 4, pyray.WHITE); 
+                pyray.draw_line_ex(pyray.Vector2(i, MAX_Y-77), pyray.Vector2(i+10, MAX_Y-77), 4, pyray.WHITE); 
          
          
+    def draw_menu(self, actors):
+        """Draws the given actor's text on the screen.
 
+        Args:
+            actor (Actor): The actor to draw.
+        """ 
+        pyray.draw_rectangle(0,0, MAX_X, MAX_Y, pyray.BLACK) 
+        for actor in actors:
+            self.draw_actor(actor)
+
+        
+        
     
     def _get_x_offset(self, text, font_size):
         width = pyray.measure_text(text, font_size)
         return int(width / 2)
     
     
-    def draw_image(self, image, position):
+    def draw_image(self, image, position, menu=False):
         filepath = image.get_filename()
         texture = self._textures[filepath]
         x = position.get_x()
-        y = position.get_y()
+        if menu:
+            y = position.get_y() - 50
+        else:
+            y = position.get_y()
         raylib_position = pyray.Vector2(x, y)
         scale = image.get_scale()
         rotation = image.get_rotation()
@@ -161,4 +181,4 @@ class VideoService:
     def unload_images(self):
         for texture in self._textures.values():
             pyray.unload_texture(texture)
-        self._textures.clear()  
+        self._textures.clear()

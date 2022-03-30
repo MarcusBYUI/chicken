@@ -14,11 +14,12 @@ class Log(Actor):
     Attributes:
         _points (int): The number of points the collision is worth.
     """
-    def __init__(self, speed, y_position, level=1):
+    def __init__(self, speed, y_position, image, size, level=1):
         super().__init__()
         
         self._logs = []       
-
+        self._image = image
+        self._size = size
         self._speed = speed
         self._prepare_logs(y_position)
         self.level = level
@@ -27,9 +28,8 @@ class Log(Actor):
     def _prepare_logs(self, y_position):
         for i in range(20, MAX_X, CELL_SIZE*5):
             log = Actor()
-            log.set_text("---")
-            log.set_font_size(CELL_SIZE)
-            log.set_color(Color(randint(0,255), randint(0,255), randint(0,255)))
+            log.set_image(self._image[randint(0,2)])
+            log.set_size(self._size)
             x = i
             y = y_position
             position = Point(x, y)
@@ -59,3 +59,8 @@ class Log(Actor):
     
     def stop_logs(self):
         self._speed = 0
+        
+    def start_logs(self, speed):
+        if speed < 0:
+            speed = 1    
+        self._speed = speed
