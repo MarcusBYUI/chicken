@@ -40,21 +40,48 @@ class Menu(Actor):
         
         #Authors
         author = Actor()
-        author.set_text("Author: Marcus Ojo-Osasere")
+        author.set_text("Author:")
         author.set_font_size(20)
 
-        position = Point(250, 100)
+        position = Point(250, 110)
         author.set_position(position)
         
         self._texts.append(author)
         
+        author1 = Actor()
+        author1.set_text("Marcus Ojo-Osasere")
+        author1.set_font_size(15)
+
+        position = Point(250, 140)
+        author1.set_position(position)
+        
+        self._texts.append(author1)
+        
+        # author2 = Actor()
+        # author2.set_text("Author 2")
+        # author2.set_font_size(15)
+
+        # position = Point(250, 180)
+        # author2.set_position(position)
+        
+        # self._texts.append(author2)
+        
+        # author3 = Actor()
+        # author3.set_text("Author 3")
+        # author3.set_font_size(15)
+
+        # position = Point(250, 220)
+        # author3.set_position(position)
+        
+        # self._texts.append(author3)
+        
         #Prompt
         prompt = Actor()
-        prompt.set_text("Press Enter To Begin")
+        prompt.set_text("Press Spacebar To Begin")
         prompt.set_font_size(20)
         prompt.set_color(YELLOW)
 
-        position = Point(250, 200)
+        position = Point(250, 280)
         prompt.set_position(position)
         
         self._texts.append(prompt)
@@ -75,10 +102,10 @@ class Menu(Actor):
     def add_game_over(self):
         prompt = Actor()
         prompt.set_text("Game Over")
-        prompt.set_font_size(30)
+        prompt.set_font_size(25)
         prompt.set_color(RED)
 
-        position = Point(250, 250)
+        position = Point(250, 310)
         prompt.set_position(position)
         
         self._texts.append(prompt)

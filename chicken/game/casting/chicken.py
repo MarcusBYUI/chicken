@@ -12,10 +12,10 @@ class Chicken(Actor):
     Attributes:
         _points (int): The number of points the collision is worth.
     """
-    def __init__(self, image, size):
+    def __init__(self, animation, size):
         super().__init__()
         self._prepare_body()
-        self._image = image
+        self._animation = animation
         self._size = size
         
 
@@ -28,13 +28,13 @@ class Chicken(Actor):
         position = Point(x, y)
         self._position = position
         
-    def get_image(self):
+    def get_animation(self):
         """Gets the ball's image.
         
         Returns:
             An instance of Image.
         """
-        return self._image
+        return self._animation
 
     def get_size(self):
         """Gets the ball's image.

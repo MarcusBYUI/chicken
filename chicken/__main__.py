@@ -5,6 +5,7 @@ from game.casting.cast import Cast
 from game.casting.lives import Lives
 from game.casting.level import Level
 from game.casting.chicken import Chicken
+from game.casting.animation import  Animation
 from game.casting.menu_screen import Menu
 from game.scripting.handle_restart_action import HandleRestartAction
 
@@ -34,15 +35,12 @@ def main():
     # create the cast
     cast = Cast()
     size = Point(28, 28)
-    image = Image(IMAGE_FILE)
-    cast.add_actor("chicken", Chicken(image, size))
+    animation = Animation(CHICKEN_IMAGES, CHICKEN_RATE)
+    
+    cast.add_actor("chicken", Chicken(animation, size))
     cast.add_actor("lives", Lives())
     cast.add_actor("level", Level())
-    
-    
-    
-    
-    
+
     #car images
     car_images = [Image(BLACK_TRUCK), Image(BLACK_CAR), Image(GREEN_CAR), Image(BLUE_CAR), Image(YELLOW_CAR), Image(RED_TRUCK)]
     

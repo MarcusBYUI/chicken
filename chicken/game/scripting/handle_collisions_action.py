@@ -28,7 +28,7 @@ class HandleCollisionsAction(Action):
     def __init__(self):
         """Constructs a new HandleCollisionsAction."""
         self._is_game_over = False
-        self._winner = "";
+        self._counter = 0
         self._keyboard_service = KeyboardService()
     
         
@@ -117,7 +117,8 @@ class HandleCollisionsAction(Action):
         
             
             if self._is_game_over:
-                chicken.set_text("+")
+                animation = chicken.get_animation()
+                animation.set_boom(True)
                 
 
                 
@@ -128,7 +129,7 @@ class HandleCollisionsAction(Action):
         for log in log_list:
             
             if chicken.get_position().get_y() == y and chicken.get_position().get_x() in range(log.get_position().get_x()-10, log.get_position().get_x()+50):
-                chicken.set_position(Point(log.get_position().get_x() + 20, y))
+                chicken.set_position(Point(log.get_position().get_x() + 17, y))
                 self._is_game_over = False
                 if chicken.get_position().get_x() <= 0:
                     self._is_game_over = True
@@ -144,7 +145,8 @@ class HandleCollisionsAction(Action):
             
             if chicken.get_position().get_y() == y and chicken.get_position().get_x() in range(car.get_position().get_x() - 20, car.get_position().get_x() + 40):
                 self._is_game_over = True 
-                chicken.set_text("+")
+                animation = chicken.get_animation()
+                animation.set_boom(True)
                   
             
         
@@ -165,6 +167,13 @@ class HandleCollisionsAction(Action):
         chicken = cast.get_first_actor("chicken")
         chicken.set_position(Point(int(MAX_X/2), int(MAX_Y - 30)))
         
+        if self._counter < 1:
+            time.sleep(3)
+            self._counter = 1
+        menu.set_draw(True)
+        
+        
+        
         
 
 
@@ -172,6 +181,8 @@ class HandleCollisionsAction(Action):
     
         #checks for input  
         if menu.restart_state():
+            animation = chicken.get_animation()
+            animation.set_boom(False)
 
             level = cast.get_first_actor("level")
             level.next_level()
@@ -207,6 +218,8 @@ class HandleCollisionsAction(Action):
             menu.set_draw(False)
             menu.change_game_state(True)
             menu.set_restart(False)
+            self._counter = 0
+            
             
            
             
@@ -248,8 +261,6 @@ class HandleCollisionsAction(Action):
             
   
             
-            menu.set_draw(True)
-            
 
             self._is_game_over = True
 
@@ -289,7 +300,9 @@ class HandleCollisionsAction(Action):
         message = cast.get_last_actor("messages")
         message.set_text("")
         
-        chicken = cast.get_first_actor("chicken")         
+        chicken = cast.get_first_actor("chicken")
+        animation = chicken.get_animation()
+        animation.set_boom(False)         
         
         
         chicken = cast.get_first_actor("chicken")

@@ -1,5 +1,6 @@
 from game.scripting.action import Action
 from game.shared.point import Point
+import time
 
 
 class DrawActorsAction(Action):
@@ -30,7 +31,8 @@ class DrawActorsAction(Action):
         
         #chicken
         chicken = cast.get_first_actor("chicken")
-        image = chicken.get_image()
+        animation = chicken.get_animation()
+        image = animation.next_image()
         pos = chicken.get_position()
         
         #menu screen
@@ -40,6 +42,9 @@ class DrawActorsAction(Action):
         
         
         if menu.get_draw():
+            
+            #time.sleep(3)
+            
             self._video_service.clear_buffer()
                 
             self._video_service.draw_menu(texts)
