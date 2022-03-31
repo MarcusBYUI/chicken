@@ -40,7 +40,10 @@ class DrawActorsAction(Action):
         texts = menu.get_texts()
         
         
-        
+        """checks if draw screen is on, which means its either the game is over or yet to start:
+        if True: screen is drawn,
+        else: Game is drawn
+        """
         if menu.get_draw():
             
             #time.sleep(3)

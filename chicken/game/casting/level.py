@@ -1,19 +1,21 @@
 from game.casting.actor import Actor
 from game.shared.point import Point
-from constants import GREEN
-from constants import YELLOW
+from constants import *
 
 
 
 class Level(Actor):
     """
-    A record of points made or lost. 
+    A record of game play levels. 
     
-    The responsibility of Score is to keep track of the points the player has earned.
-    It contains methods for adding and getting points. Client should use get_text() to get a string representation of the points earned.
+    The responsibility of Score is to keep track of the game level. It also displays itself at in the top banner
 
     Attributes:
-        _points (int): The points earned in the game.
+        _level (int): The points earned in the game.
+        _color (instance): color of level
+        _position (int): position of the level on the screen
+        set_text (int): level's text
+        _font_size (int): level display font size
     """
     def __init__(self):
         super().__init__()
@@ -27,10 +29,8 @@ class Level(Actor):
         
 
     def next_level(self):
-        """Adds the given points to the score's total points.
+        """Adds a level to the last level.
         
-        Args:
-            points (int): The points to add.
         """
         self._level += 1
         

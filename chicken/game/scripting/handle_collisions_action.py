@@ -44,6 +44,7 @@ class HandleCollisionsAction(Action):
 
             self._handle_collision(cast)
             lives = cast.get_first_actor("lives") 
+            #deduct live and start to run game over sequence before the next game loop
             if self._is_game_over:  
                 lives.remove_live()
                 lives.set_text(f"Lives: {lives.get_lives()}") 
@@ -55,6 +56,9 @@ class HandleCollisionsAction(Action):
             
             
         else: 
+            #first loop after the game over sequence
+            #If user has lives: game restarts
+            #else: its game over
             lives = cast.get_first_actor("lives") 
             
             if lives.get_lives() <= 0:
@@ -70,7 +74,7 @@ class HandleCollisionsAction(Action):
 
     
     def _handle_collision(self, cast):
-        """Sets the game over flag if the cycle collides with one of its segments.
+        """Handles the collisions sequence.
         
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -123,6 +127,13 @@ class HandleCollisionsAction(Action):
 
                 
     def check_log_collision(self, row, cast, y):   
+        """works on colision between the chicken and the log on a particule y axis, which is also the same as the position of the logs in that lane
+
+        Args:
+            row (int): the row/lane of the log
+            cast (Cast): The cast of Actors in the game.
+            y (int): y axis of the log
+        """
         chicken = cast.get_first_actor("chicken")         
         log_list = row.get_logs()
         
@@ -137,7 +148,14 @@ class HandleCollisionsAction(Action):
                  
                 
                 
-    def check_car_collision(self, row, cast, y):   
+    def check_car_collision(self, row, cast, y):  
+        """works on colision between the chicken and the car on a particule y axis, which is also the same as the position of the car in that lane
+
+        Args:
+            row (int): the row/lane of the car
+            cast (Cast): The cast of Actors in the game.
+            y (int): y axis of the car
+        """ 
         chicken = cast.get_first_actor("chicken")         
         car_list = row.get_cars()
         
@@ -153,14 +171,17 @@ class HandleCollisionsAction(Action):
                 
     def _restart(self, cast, script):
         """When the game is over, this would be the method running in the game loop.
-        It takes the cast and script as parameters and renders the white colored cycles without collisions.
+        It takes the cast and script as parameters and delays for about 3 sec for the user to see the boom.png of the chicken before
+        drawing the game over screen.
         There is an if statement that checks if the user has pressed the spacebar to restart the game.
         
         
 
         Args:
-            cast (_type_): _description_
-            script (_type_): _description_
+            cast (Cast): The cast of Actors in the game.
+
+            script (Script): The script of Actions in the game.
+
         """
         menu = cast.get_first_actor("menu")
         
@@ -212,19 +233,11 @@ class HandleCollisionsAction(Action):
                 rows.start_logs(randint(1,3))
             
             
-            
-            
-            
             menu.set_draw(False)
             menu.change_game_state(True)
             menu.set_restart(False)
             self._counter = 0
-            
-            
-           
-            
-            
-            
+
             self._is_game_over=False
 
             
@@ -232,7 +245,7 @@ class HandleCollisionsAction(Action):
         
         
     def _handle_game_over(self, cast, script):
-        """Shows the 'game over' message including the playere that won the round, also applies scores to the appropriate individuals.
+        """Adds the game over text to the menu screen, stops the cars and sets _is_game_over to true
         
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -266,7 +279,7 @@ class HandleCollisionsAction(Action):
 
 
     def _handle_life_loss(self, cast, script):
-        """Shows the 'game over' message including the playere that won the round, also applies scores to the appropriate individuals.
+        """Shows the restart message.
         
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -296,6 +309,9 @@ class HandleCollisionsAction(Action):
             self._is_game_over = True
             
     def _continue(self, cast, script):
+        
+        """delays for 2 sec and continues the game as a result of the fact that the players still has lives left
+        """
         time.sleep(2)
         message = cast.get_last_actor("messages")
         message.set_text("")
@@ -318,33 +334,4 @@ class HandleCollisionsAction(Action):
 
 
 
-            # cast.remove_group("car")
-            # cast.remove_group("log")
-            # size = Point(28, 28)
             
-            # #car images
-            # car_images = [Image(BLACK_TRUCK), Image(BLACK_CAR), Image(GREEN_CAR), Image(BLUE_CAR), Image(YELLOW_CAR), Image(RED_TRUCK)]
-            
-            # #car lane 1
-            # cast.add_actor("car", Car(2, CAR_LANE_ONE, car_images, size))
-            
-            # #car lane 2
-            # cast.add_actor("car", Car(1, CAR_LANE_TWO, car_images, size))
-            
-            # #car lane 3
-            # cast.add_actor("car", Car(3, CAR_LANE_THREE, car_images, size))
-            
-            
-            
-            # #Logs
-            # log_size = Point(35, 28)
-            
-            # #Log images
-            # log_images = [Image(LONG_PLANK), Image(PLANK), Image(BRANCH)]
-            
-            # #Water Log
-            # cast.add_actor("log", Log(2, LOG_LANE_THREE, log_images, log_size))
-            # cast.add_actor("log", Log(1, LOG_LANE_TWO, log_images, log_size))
-            # cast.add_actor("log", Log(3, LOG_LANE_ONE, log_images, log_size))
-            
-            # script.add_action("input", ControlChickenAction(self._keyboard_service))

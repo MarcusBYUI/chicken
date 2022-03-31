@@ -132,15 +132,15 @@ class Actor:
         return self._image
 
     def get_size(self):
-        """Gets the ball's image.
+        """Gets the Actor's size.
         
         Returns:
-            An instance of Image.
+            teh actors size.
         """
         return self._size
     
     def set_image(self, image):
-        """Gets the ball's image.
+        """Sets the Actor's image.
         
         Returns:
             An instance of Image.
@@ -148,43 +148,43 @@ class Actor:
         self._image = image
 
     def set_size(self, size):
-        """Gets the ball's image.
+        """Sets the Actors's size.
         
         Returns:
-            An instance of Image.
+            size of the Actor.
         """
         self._size = size
         
     def set_end_position(self, position):
-        """Updates the position to the given one.
+        """Updates the end_position to the given one.
         
         Args:
-            position (Point): The given position.
+            _end_position: The given position.
         """
         self._end_position = position
         
         
     def get_end_position(self):
-        """Updates the position to the given one.
+        """get the end position of the actor. example is when the actor is a line with thickness
         
-        Args:
-            position (Point): The given position.
+        Returns:
+            end position of the actor.
         """
         return self._end_position
     
     def set_thickness(self, thickness):
-        """Updates the position to the given one.
+        """Updates the thickness to the given one.
         
         Args:
-            position (Point): The given position.
+            _thickness: The given thickness.
         """
         self._thickness = thickness
         
         
     def get_thickness(self):
-        """Updates the position to the given one.
+        """get the thickness of the actor.
         
-        Args:
-            position (Point): The given position.
+        Returns:
+            thickness of the actor.
         """
         return self._thickness

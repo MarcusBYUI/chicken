@@ -6,12 +6,12 @@ from random import *
 
 
 class Road(Actor):
-    """
-    A road is where the chicken are to be able to cross
+    """A Road is where the cars pass by and the chiken tries to cross
 
-    Attributes:
-        _points (int): The number of points the collision is worth.
-    """
+        Attributes:
+            start position Point(int, int): The start x and y position of the banner.
+            start position Point(int, int): The end x and y position of the banner.
+            color: The color of the banner."""
     def __init__(self):
         super().__init__()       
         x = 300

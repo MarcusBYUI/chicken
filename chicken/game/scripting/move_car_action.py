@@ -2,7 +2,7 @@ from game.scripting.action import Action
 
 class MoveCarAction(Action):
     def execute(self, cast, script):
-        """Executes the grow trail action.
+        """Executes the move_next on the car action.
 
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -11,7 +11,7 @@ class MoveCarAction(Action):
         self._move_car(cast)
 
     def _move_car(self, cast):
-        """Add segments to grow the trail of the cycle.
+        """calls the move.next() method that handles the movement of the car
         
         Args:
             cast (Cast): The cast of Actors in the game.

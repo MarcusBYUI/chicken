@@ -4,7 +4,7 @@ from game.shared.color import Color
 COLUMNS = 40
 ROWS = 20
 CELL_SIZE = 40
-MAX_X = 900
+MAX_X = 945
 MAX_Y = 400
 FRAME_RATE = 8
 FONT_SIZE = 15
@@ -23,7 +23,7 @@ CAR_LANE_ONE = 325
 CAR_LANE_TWO = 287
 CAR_LANE_THREE = 247
 
-CAR_GAP = 115
+CAR_GAP = 160
 
 
 LOG_LANE_ONE = 194
@@ -49,4 +49,5 @@ BRANCH = "chicken/assets/images/branch.png"
 CHICKEN_IMAGES = [f"chicken/assets/images/{n}.png" for n in range(1, 8)]
 CHICKEN_RATE = 1
 BOOM = "chicken/assets/images/boom.png"
+CHICKENS_LIVES = 10
 

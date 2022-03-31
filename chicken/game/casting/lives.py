@@ -7,17 +7,20 @@ from constants import *
 
 class Lives(Actor):
     """
-    A record of points made or lost. 
+    A record of Actors'(chicken) lives. 
     
-    The responsibility of Score is to keep track of the points the player has earned.
-    It contains methods for adding and getting points. Client should use get_text() to get a string representation of the points earned.
+    The responsibilty of the actor is to keep track of the actors live so it the end of the game can be managed.
 
     Attributes:
-        _points (int): The points earned in the game.
+        _lives (int): The actors lives.
+        _color (instance): color of live  text
+        _position (int): position of the live  text on the screen
+        set_text (int): live  text
+        _font_size (int): live text display font size
     """
     def __init__(self):
         super().__init__()
-        self._lives = 1
+        self._lives = CHICKENS_LIVES
         self._color = WHITE
         self._position = Point(0, 10)
         self.set_text(f"Lives: {self._lives}")
@@ -27,7 +30,7 @@ class Lives(Actor):
         
 
     def remove_live(self):
-        """Adds the given points to the score's total points.
+        """removes 1 from the actors live.
         
         Args:
             points (int): The points to add.

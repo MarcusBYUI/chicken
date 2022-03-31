@@ -101,6 +101,12 @@ class VideoService:
  
         
     def draw_shape(self, actor, lanes=False):
+
+        """Draws the shapes for the given actor on the screen.
+
+        Args:
+            actors (Actor): An instancvce of actor to draw.
+        """ 
         x1 = actor.get_position().get_x()
         y1 = actor.get_position().get_y()
         x2 = actor.get_end_position().get_x()
@@ -118,10 +124,11 @@ class VideoService:
          
          
     def draw_menu(self, actors):
-        """Draws the given actor's text on the screen.
+        """Draws the game menu.
 
         Args:
-            actor (Actor): The actor to draw.
+            actor (list):  List of texts to be displayed
+
         """ 
         pyray.draw_rectangle(0,0, MAX_X, MAX_Y, pyray.BLACK) 
         for actor in actors:
@@ -136,6 +143,12 @@ class VideoService:
     
     
     def draw_image(self, image, position, menu=False):
+
+        """Draws the image for the given actor on the screen.
+
+        Args:
+            actor (instance): An of actor to draw.
+        """ 
         filepath = image.get_filename()
         texture = self._textures[filepath]
         x = position.get_x()
@@ -150,7 +163,7 @@ class VideoService:
         pyray.draw_texture_ex(texture, raylib_position, rotation, scale, tint)
         
     def draw_images(self, actors, centered=False):
-        """Draws the text for the given list of actors on the screen.
+        """Draws the images for the given list of actors on the screen.
 
         Args:
             actors (list): A list of actors to draw.

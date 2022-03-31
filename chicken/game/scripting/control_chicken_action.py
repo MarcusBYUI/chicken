@@ -7,7 +7,7 @@ from game.shared.point import Point
 
 class ControlChickenAction(Action):
     """
-    An input action that controls Cycle One.
+    An input action the Chicken.
     
     The responsibility of ControlChickenAction is to get the direction and move chicken in that direction.
 

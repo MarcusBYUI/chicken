@@ -7,10 +7,13 @@ from random import *
 
 class Banner(Actor):
     """
-    A road is where the chicken are to be able to cross
+    A Banner is where the game score, game level and game messages are displayed
 
     Attributes:
-        _points (int): The number of points the collision is worth.
+        start position Point(int, int): The start x and y position of the banner.
+        start position Point(int, int): The end x and y position of the banner.
+        color: The color of the banner.
+
     """
     def __init__(self):
         super().__init__()

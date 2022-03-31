@@ -2,7 +2,8 @@ from game.scripting.action import Action
 
 class MoveLogAction(Action):
     def execute(self, cast, script):
-        """Executes the grow trail action.
+        """Executes the move_next on the log action.
+
 
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -11,7 +12,7 @@ class MoveLogAction(Action):
         self._move_log(cast)
 
     def _move_log(self, cast):
-        """Add segments to grow the trail of the cycle.
+        """calls the move.next() method that handles the movement of the log
         
         Args:
             cast (Cast): The cast of Actors in the game.

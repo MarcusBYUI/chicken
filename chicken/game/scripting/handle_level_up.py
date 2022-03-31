@@ -12,23 +12,23 @@ import time
 
 class HandleLevelUp(Action):
     """
-    An update action that handles interactions between the actors.
+    An update action that handles HandleLevelUp of the chicken.
     
-    The responsibility of HandleCollisionsAction is to handle the situation when the cycles collide with their own segments, or the segments of it's opponent, or the game is over.
+    The responsibility of HandleLevelUp is to handle the change in level of the chicken
 
     Attributes:
-        _is_game_over (boolean): Whether or not the game is over.
+        _level_up (boolean): Whether or not the it is time to level up.
     """
 
     def __init__(self):
-        """Constructs a new HandleCollisionsAction."""
+        """Constructs a new HandleLevelUp."""
         self._level_up = False
         self._keyboard_service = KeyboardService()
         self._action = HandleRestartAction(self._keyboard_service)
         
 
     def execute(self, cast, script):
-        """Executes the handle collisions action.
+        """Executes the HandleLevelUp action if the user qualifies for level up.
 
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -51,7 +51,7 @@ class HandleLevelUp(Action):
 
     
     def _check_level_up(self, cast):
-        """Sets the game over flag if the cycle collides with one of its segments.
+        """Checks the position of the actor on the screen if it has gotten to the state where level up is needed.
         
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -62,6 +62,8 @@ class HandleLevelUp(Action):
         
                 
     def _do_level_up(self, cast, script):
+        """Actual level up is done since the actor(Chicken meets the requirement)
+        """
         
         level = cast.get_first_actor("level")
         last_level = level.get_level()
@@ -78,7 +80,7 @@ class HandleLevelUp(Action):
     
         car_rows = cast.get_actors("car")
         for rows in car_rows:
-            rows.start_cars(randint(last_level - randint(1, 3),next_level))
+            rows.start_cars(randint(last_level - randint(1, 3), next_level))
 
         
         log_rows = cast.get_actors("log")
@@ -91,6 +93,10 @@ class HandleLevelUp(Action):
         
         
     def _prepare_levelup(self, cast, script):
+        """A message that prepares the user for a level up
+
+
+        """
         if self._level_up:
             
             message = Actor()

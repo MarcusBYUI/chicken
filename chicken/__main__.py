@@ -8,15 +8,12 @@ from game.casting.chicken import Chicken
 from game.casting.animation import  Animation
 from game.casting.menu_screen import Menu
 from game.scripting.handle_restart_action import HandleRestartAction
-
 from game.casting.car import Car
 from game.casting.log import Log
 from game.scripting.script import Script
 from game.shared.point import Point
 from game.casting.image import Image
 from game.scripting.control_chicken_action import ControlChickenAction
-#from game.scripting.start_action import StartAction
-
 from game.scripting.move_actors_action import MoveActorsAction
 from game.scripting.handle_collisions_action import HandleCollisionsAction
 from game.scripting.handle_level_up import HandleLevelUp
@@ -27,7 +24,6 @@ from game.services.video_service import VideoService
 from game.scripting.move_car_action import MoveCarAction
 from game.scripting.load_asset_action import LoadAssetsAction
 from game.scripting.unload_assets_action import UnloadAssetsAction
-
 from constants import *
 
 def main():
@@ -92,7 +88,6 @@ def main():
     
     script.add_action("input", ControlChickenAction(keyboard_service))
     script.add_action("input", HandleRestartAction(keyboard_service))
-    #script.add_action("input", StartAction(keyboard_service))
     
     script.add_action("update", LoadAssetsAction(video_service))
     

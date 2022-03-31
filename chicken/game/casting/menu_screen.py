@@ -9,10 +9,15 @@ from random import *
 
 class Menu(Actor):
     """
-    A road is where the chicken are to be able to cross
-
+    A DISPLAY  at the beginig of the game that that handles game introduction and authors. Also does the job of gameover
+    screen with an extra game over text added from  the add_game_over method
+    
     Attributes:
-        _points (int): The number of points the collision is worth.
+        _start_game (bool): The number of points the collision is worth.
+        _restart (bool): A boolean value to check the state of the user wants to restart the game after this screen is displayed
+        _draw (bool): A boolean value that determines when this screen is displayed.
+        _texts (list): A list if texts to be dawn on this screen
+        _prepare_text (function): A function that prepares the taxts to be drawn and adds them to a list
     """
     def __init__(self):
         super().__init__()\
@@ -27,6 +32,8 @@ class Menu(Actor):
         
         
     def _prepare_text(self):
+        """a function that prepares the texts
+        """
                 
         #Header
         text = Actor()
@@ -57,23 +64,23 @@ class Menu(Actor):
         
         self._texts.append(author1)
         
-        # author2 = Actor()
-        # author2.set_text("Author 2")
-        # author2.set_font_size(15)
+        author2 = Actor()
+        author2.set_text("Julie")
+        author2.set_font_size(15)
 
-        # position = Point(250, 180)
-        # author2.set_position(position)
+        position = Point(250, 180)
+        author2.set_position(position)
         
-        # self._texts.append(author2)
+        self._texts.append(author2)
         
-        # author3 = Actor()
-        # author3.set_text("Author 3")
-        # author3.set_font_size(15)
+        author3 = Actor()
+        author3.set_text("Rune")
+        author3.set_font_size(15)
 
-        # position = Point(250, 220)
-        # author3.set_position(position)
+        position = Point(250, 220)
+        author3.set_position(position)
         
-        # self._texts.append(author3)
+        self._texts.append(author3)
         
         #Prompt
         prompt = Actor()
@@ -88,6 +95,11 @@ class Menu(Actor):
         
 
     def set_draw(self, value):
+        """sets the draw state of this screen
+
+        Args:
+            value (boolean): state of the screen
+        """
         self._draw = value
         
 
@@ -100,12 +112,14 @@ class Menu(Actor):
     
     
     def add_game_over(self):
+        """Adds a game over text to the list of texts beeing drawn on the screen
+        """
         prompt = Actor()
         prompt.set_text("Game Over")
         prompt.set_font_size(25)
         prompt.set_color(RED)
 
-        position = Point(250, 310)
+        position = Point(250, 320)
         prompt.set_position(position)
         
         self._texts.append(prompt)
@@ -114,6 +128,12 @@ class Menu(Actor):
         
     
     def change_game_state(self, state):
+        """changes the initial state of the game
+
+        Args:
+            state (boolean): state of the game
+
+        """
         
         self._start_game = state
         
@@ -121,6 +141,11 @@ class Menu(Actor):
         return self._start_game
     
     def set_restart(self, state):
+        """set's the restart attribute of the game screen
+
+        Args:
+            state (booleean): state of the restart
+        """
         self._restart = state
         
     def restart_state(self):
