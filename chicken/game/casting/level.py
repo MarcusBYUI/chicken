@@ -37,3 +37,6 @@ class Level(Actor):
     def get_level(self):
         
         return self._level
+    
+    def reset(self):
+        self._level = 1

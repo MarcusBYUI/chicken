@@ -23,10 +23,14 @@ class Director:
             script (Script): The script of actions.
         """
         self._video_service.open_window()
+        self._execute_actions("initialize", cast, script)
+        self._execute_actions("load", cast, script)
         while self._video_service.is_window_open():
             self._execute_actions("input", cast, script)
             self._execute_actions("update", cast, script)
             self._execute_actions("output", cast, script)
+        self._execute_actions("unload", cast, script)
+        self._execute_actions("release", cast, script)            
         self._video_service.close_window()
 
     def _execute_actions(self, group, cast, script):

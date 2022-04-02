@@ -9,11 +9,11 @@ from game.casting.lives import Lives
 from game.casting.image import Image
 from game.scripting.control_chicken_action import ControlChickenAction
 from random import *
-
-
-
+from game.casting.sound import Sound
+from constants import *
 
 import time
+
 
 class HandleCollisionsAction(Action):
     """
@@ -25,13 +25,17 @@ class HandleCollisionsAction(Action):
         _is_game_over (boolean): Whether or not the game is over.
     """
 
-    def __init__(self):
+    def __init__(self, audio_service):
         """Constructs a new HandleCollisionsAction."""
         self._is_game_over = False
         self._counter = 0
         self._keyboard_service = KeyboardService()
-    
+        self._audio_service = audio_service
+        self._dead_chicken_sound = Sound(DEAD_CHICKEN)
+        self._game_play_sound = Sound(GAME_PLAY_SOUND)
+        self._game_over_sound = Sound(GAME_OVER_SOUND)
         
+
 
     def execute(self, cast, script):
         """Executes the handle collisions action.
@@ -46,12 +50,18 @@ class HandleCollisionsAction(Action):
             lives = cast.get_first_actor("lives") 
             #deduct live and start to run game over sequence before the next game loop
             if self._is_game_over:  
+                self._audio_service.stop_sound(self._game_play_sound)
+                
                 lives.remove_live()
                 lives.set_text(f"Lives: {lives.get_lives()}") 
                 
                 if lives.get_lives() <= 0:
+                    self._audio_service.play_sound(self._game_over_sound)
+                    
                     self._handle_game_over(cast, script)  
                 else:
+                    self._audio_service.play_sound(self._dead_chicken_sound)
+                    
                     self._handle_life_loss(cast, script) 
             
             
@@ -67,9 +77,7 @@ class HandleCollisionsAction(Action):
             else:
                 self._continue(cast, script)
                 
-                
-                
-                
+    
 
 
     
@@ -88,8 +96,7 @@ class HandleCollisionsAction(Action):
         self.check_car_collision(car_mid_row, cast, 290)
         self.check_car_collision(car_top_row, cast, 330)
         
-            
-        
+ 
         log_rows = cast.get_actors("log")
         base_row = log_rows[2]
         mid_row = log_rows[1]
@@ -101,7 +108,6 @@ class HandleCollisionsAction(Action):
             return
             
         else:
-                
             chicken = cast.get_first_actor("chicken") 
         
             if chicken.get_position().get_y() == 170:
@@ -124,8 +130,7 @@ class HandleCollisionsAction(Action):
                 animation = chicken.get_animation()
                 animation.set_boom(True)
                 
-
-                
+      
     def check_log_collision(self, row, cast, y):   
         """works on colision between the chicken and the log on a particule y axis, which is also the same as the position of the logs in that lane
 
@@ -142,12 +147,10 @@ class HandleCollisionsAction(Action):
             if chicken.get_position().get_y() == y and chicken.get_position().get_x() in range(log.get_position().get_x()-10, log.get_position().get_x()+50):
                 chicken.set_position(Point(log.get_position().get_x() + 17, y))
                 self._is_game_over = False
-                if chicken.get_position().get_x() <= 0:
+                if chicken.get_position().get_x() <= 0 or chicken.get_position().get_x() >= MAX_X-17:
                     self._is_game_over = True
                     
-                 
-                
-                
+
     def check_car_collision(self, row, cast, y):  
         """works on colision between the chicken and the car on a particule y axis, which is also the same as the position of the car in that lane
 
@@ -165,17 +168,15 @@ class HandleCollisionsAction(Action):
                 self._is_game_over = True 
                 animation = chicken.get_animation()
                 animation.set_boom(True)
-                  
-            
-        
                 
+
     def _restart(self, cast, script):
         """When the game is over, this would be the method running in the game loop.
         It takes the cast and script as parameters and delays for about 3 sec for the user to see the boom.png of the chicken before
         drawing the game over screen.
         There is an if statement that checks if the user has pressed the spacebar to restart the game.
         
-        
+
 
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -189,27 +190,25 @@ class HandleCollisionsAction(Action):
         chicken.set_position(Point(int(MAX_X/2), int(MAX_Y - 30)))
         
         if self._counter < 1:
-            time.sleep(3)
+            time.sleep(4)
             self._counter = 1
+            self._game_play_sound.set_volume(1)
+            self._audio_service.play_sound(self._game_play_sound)
         menu.set_draw(True)
         
-        
-        
-        
 
-
-
-    
         #checks for input  
         if menu.restart_state():
+            self._audio_service.stop_sound(self._game_play_sound)            
+            self._game_play_sound.set_volume(0.5)
+            self._audio_service.play_sound(self._game_play_sound)                
+            
             animation = chicken.get_animation()
             animation.set_boom(False)
 
             level = cast.get_first_actor("level")
-            level.next_level()
-            
-            
-            
+            level.reset()
+
             cast.remove_group("lives")
             
             cast.add_actor("lives", Lives())
@@ -217,9 +216,6 @@ class HandleCollisionsAction(Action):
             
             next_level = 1
             level.set_text(f"Level: {next_level}")
-            
-            
-            
             
         
                         
@@ -271,9 +267,7 @@ class HandleCollisionsAction(Action):
             log_rows = cast.get_actors("log")
             for rows in log_rows:
                 rows.stop_logs()
-            
-  
-            
+               
 
             self._is_game_over = True
 
@@ -295,17 +289,12 @@ class HandleCollisionsAction(Action):
             position = Point(x, y)
             message.set_position(position)
             message.set_font_size = 20
-            
-            
-            
+             
             message.set_text("Your Chicken Lost A Life, Restarting In 2 seconds")  
             
                 
             cast.add_actor("messages", message) 
-            
-            
-
-            
+              
             self._is_game_over = True
             
     def _continue(self, cast, script):
@@ -318,8 +307,10 @@ class HandleCollisionsAction(Action):
         
         chicken = cast.get_first_actor("chicken")
         animation = chicken.get_animation()
-        animation.set_boom(False)         
-        
+        animation.set_boom(False)  
+               
+        self._game_play_sound.set_volume(0.5)
+        self._audio_service.play_sound(self._game_play_sound)                
         
         chicken = cast.get_first_actor("chicken")
         if chicken.get_position().get_y() < 211:
@@ -329,9 +320,3 @@ class HandleCollisionsAction(Action):
             chicken.set_position(Point(int(MAX_X/2), int(MAX_Y - 30)))
         self._is_game_over=False
 
-
-
-
-
-
-            

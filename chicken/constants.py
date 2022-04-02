@@ -51,3 +51,9 @@ CHICKEN_RATE = 1
 BOOM = "chicken/assets/images/boom.png"
 CHICKENS_LIVES = 10
 
+GAME_PLAY_SOUND = "chicken/assets/sounds/welcome.mp3"
+CAR_HORN = "chicken/assets/sounds/horn.wav"
+DEAD_CHICKEN = "chicken/assets/sounds/dead.wav"
+LEVEL_UP = "chicken/assets/sounds/levelup.wav"
+GAME_OVER_SOUND = "chicken/assets/sounds/over.wav"
+

@@ -3,9 +3,11 @@ from game.casting.actor import Actor
 from game.scripting.action import Action
 from game.shared.point import Point
 from game.services.keyboard_service import KeyboardService
+from game.services.audio_service import RaylibAudioService
+from game.casting.sound import Sound
+
 from game.scripting.handle_restart_action import HandleRestartAction
-from game.casting.car import Car
-from game.casting.log import Log
+
 from random import  *
 
 import time
@@ -20,11 +22,16 @@ class HandleLevelUp(Action):
         _level_up (boolean): Whether or not the it is time to level up.
     """
 
-    def __init__(self):
+    def __init__(self, audioservice):
         """Constructs a new HandleLevelUp."""
         self._level_up = False
         self._keyboard_service = KeyboardService()
-        self._action = HandleRestartAction(self._keyboard_service)
+        self._audio_service = audioservice
+        self._level_up_sound = Sound(LEVEL_UP)
+        self._game_play_sound = Sound(GAME_PLAY_SOUND)
+        
+        
+        self._action = HandleRestartAction(self._audio_service,self._keyboard_service)
         
 
     def execute(self, cast, script):
@@ -39,9 +46,11 @@ class HandleLevelUp(Action):
             self._check_level_up(cast)
             
             if self._level_up:
+                
                 self._prepare_levelup(cast, script)
                 
         else:
+            
             time.sleep(3)
             message = cast.get_last_actor("messages")
                 
@@ -64,6 +73,10 @@ class HandleLevelUp(Action):
     def _do_level_up(self, cast, script):
         """Actual level up is done since the actor(Chicken meets the requirement)
         """
+        self._game_play_sound.set_volume(0.5)
+        
+        self._audio_service.play_sound(self._game_play_sound)
+        
         
         level = cast.get_first_actor("level")
         last_level = level.get_level()
@@ -79,13 +92,19 @@ class HandleLevelUp(Action):
         
     
         car_rows = cast.get_actors("car")
+        i = 1
         for rows in car_rows:
-            rows.start_cars(randint(last_level - randint(1, 3), next_level))
+            rows.start_cars(last_level + i)
+            i += 1
+            
 
         
         log_rows = cast.get_actors("log")
+        j = 1
         for rows in log_rows:
-            rows.start_logs(randint(last_level - randint(1, 3) ,next_level))
+            
+            rows.start_logs(last_level + j)
+            j += 1
         
         self._level_up = False
         
@@ -108,6 +127,10 @@ class HandleLevelUp(Action):
             
             message.set_text("Level Completed!!, Brace for the Next Level")  
             message.set_font_size = 20
+            self._audio_service.stop_sound(self._game_play_sound)
+            
+            self._audio_service.play_sound(self._level_up_sound)
+            
             
             
                 

@@ -8,6 +8,7 @@ from game.casting.chicken import Chicken
 from game.casting.animation import  Animation
 from game.casting.menu_screen import Menu
 from game.scripting.handle_restart_action import HandleRestartAction
+from game.scripting.play_sound_action import PlaySoundAction
 from game.casting.car import Car
 from game.casting.log import Log
 from game.scripting.script import Script
@@ -21,7 +22,10 @@ from game.scripting.draw_actors_action import DrawActorsAction
 from game.directing.director import Director
 from game.services.keyboard_service import KeyboardService
 from game.services.video_service import VideoService
+from game.services.audio_service import RaylibAudioService
 from game.scripting.move_car_action import MoveCarAction
+from game.scripting.initialize_devices_action import InitializeDevicesAction
+from game.scripting.release_devices_action import ReleaseDevicesAction
 from game.scripting.load_asset_action import LoadAssetsAction
 from game.scripting.unload_assets_action import UnloadAssetsAction
 from constants import *
@@ -83,21 +87,26 @@ def main():
     # start the game
     keyboard_service = KeyboardService() 
     video_service =  VideoService()
+    AUDIO_SERVICE = RaylibAudioService()
 
     script = Script()
     
     script.add_action("input", ControlChickenAction(keyboard_service))
-    script.add_action("input", HandleRestartAction(keyboard_service))
+    script.add_action("input", HandleRestartAction(AUDIO_SERVICE, keyboard_service))
     
-    script.add_action("update", LoadAssetsAction(video_service))
+    script.add_action("load", LoadAssetsAction(AUDIO_SERVICE, video_service))
+    script.add_action("initialize", InitializeDevicesAction(AUDIO_SERVICE, video_service))
+    
     
     script.add_action("update", MoveActorsAction())
-    script.add_action("update", MoveCarAction())
-    script.add_action("update", HandleCollisionsAction())
-    script.add_action("update", HandleLevelUp())
+    script.add_action("update", MoveCarAction(AUDIO_SERVICE))
+    script.add_action("update", HandleCollisionsAction(AUDIO_SERVICE))
+    script.add_action("update", HandleLevelUp(AUDIO_SERVICE))
     
+    script.add_action("output", PlaySoundAction(AUDIO_SERVICE, GAME_PLAY_SOUND))
+    script.add_action("release", ReleaseDevicesAction(AUDIO_SERVICE, video_service))
     script.add_action("output", DrawActorsAction(video_service))
-    script.add_action("output", UnloadAssetsAction(video_service))
+    script.add_action("unload", UnloadAssetsAction(AUDIO_SERVICE, video_service))
     
     
     director = Director(video_service)

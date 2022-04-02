@@ -1,4 +1,5 @@
 from constants import *
+from game.casting.sound import Sound
 
 
 from game.scripting.action import Action
@@ -15,13 +16,15 @@ class HandleRestartAction(Action):
         _keyboard_service (KeyboardService): An instance of KeyboardService.
     """
 
-    def __init__(self, keyboard_service):
+    def __init__(self,audio_service, keyboard_service):
         """Constructs a new HandleRestartAction using the specified KeyboardService.
         
         Args:
             keyboard_service (KeyboardService): An instance of KeyboardService.
         """
         self._keyboard_service = keyboard_service
+        self._audio_service = audio_service
+        self._game_sound = Sound(GAME_PLAY_SOUND)
         
       
 
@@ -39,6 +42,9 @@ class HandleRestartAction(Action):
             if not menu.get_game_state():
                 #start game
                 menu.set_draw(False)
+                self._audio_service.stop_sound(self._game_sound)            
+                self._game_sound.set_volume(0.5)
+                self._audio_service.play_sound(self._game_sound)
                 menu.change_game_state(True)
             
             elif menu.get_draw():
