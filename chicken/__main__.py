@@ -77,9 +77,7 @@ def main():
     #River
     cast.add_actor("river", River())
     
-    
-    
-    
+
     #Menu
     cast.add_actor("menu", Menu())
     
