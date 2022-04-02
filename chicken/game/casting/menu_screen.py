@@ -48,7 +48,7 @@ class Menu(Actor):
         #Authors
         author = Actor()
         author.set_text("Author:")
-        author.set_font_size(20)
+        author.set_font_size(25)
 
         position = Point(250, 110)
         author.set_position(position)
@@ -57,14 +57,25 @@ class Menu(Actor):
         
         author1 = Actor()
         author1.set_text("Marcus Ojo-Osasere")
-        author1.set_font_size(15)
+        author1.set_font_size(20)
 
-        position = Point(250, 140)
+        position = Point(250, 145)
         author1.set_position(position)
         
         self._texts.append(author1)
         
         
+        
+        #Prompt
+        prompt = Actor()
+        prompt.set_text("Press Spacebar To Begin")
+        prompt.set_font_size(20)
+        prompt.set_color(YELLOW)
+
+        position = Point(250, 280)
+        prompt.set_position(position)
+        
+        self._texts.append(prompt)
         
 
     def set_draw(self, value):
